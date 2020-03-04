@@ -10,7 +10,7 @@ const HEADERS = {
 
 // VUEJS
 
-var app = new Vue({
+var appTableContent = new Vue({
     el: '#app-table-content',
     data: {
       contacts: []
@@ -24,7 +24,8 @@ var app = new Vue({
             axios.get(URL_API_CONTACTS, HEADERS)
             .then(function (response) {
                 // handle success
-                console.log(response);
+                console.log(response.data.records);
+                appTableContent.contacts = response.data.records;
             })
             .catch(function (error) {
                 // handle error

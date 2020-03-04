@@ -56,22 +56,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>name</td>
-            <td>email@email</td>
-            <td>1234-123</td>
+          <tr v-for="contact in contacts">
+            <td> {{ contact.fields.Name }} </td>
+            <td> {{ contact.fields.Email }} </td>
+            <td> {{ contact.fields.Phone }} </td>
             <td>📖</td>
             <td>✏</td>
             <td>✖</td>
-          </tr>
-          <tr>
-            <th>2</th>
-            <td>test</td>
-            <td>38</td>
-            <td>20</td>
-            <td>11</td>
-            <td>7</td>
-          </tr>
           </tr>
         </tbody>
       </table>
