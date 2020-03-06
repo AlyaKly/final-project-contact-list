@@ -13,14 +13,23 @@ const HEADERS = {
 var appTableContent = new Vue({
     el: '#app-table-content',
     data: {
-      contacts: []
+      contacts: [],
+      searchName: '',
     },
     mounted: function() {
         this.getTableContent();
     },
+    computed: {
+        contactSearch: function() {
+            return this.contacts.filter(function(contact){
+                return contact.fields.Name.includes(appTableContent.searchName)
+            });
+            console.log(searchName);
+        }
+    },
     methods: {
         getTableContent: function() {
-            // Make a request for a user with a given ID
+            // Make a request to get full list of contacts
             axios.get(URL_API_CONTACTS, HEADERS)
             .then(function (response) {
                 // handle success
@@ -37,3 +46,4 @@ var appTableContent = new Vue({
         }
     }
   })
+
