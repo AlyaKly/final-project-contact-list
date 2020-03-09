@@ -8,28 +8,28 @@ const HEADERS = {
 };
 
 
-// VUEJS
-
+// View list of existing contacts
 var appTableContent = new Vue({
     el: '#app-table-content',
     data: {
       contacts: [],
-      searchName: '',
+      searchName: ''
+
     },
     mounted: function() {
         this.getTableContent();
     },
+    // Search by Contact Name
     computed: {
         contactSearch: function() {
             return this.contacts.filter(function(contact){
-                return contact.fields.Name.includes(appTableContent.searchName)
+                return contact.fields.Name.includes(appTableContent.searchName.charAt(0).toUpperCase() + appTableContent.searchName.slice(1))
             });
-            console.log(searchName);
         }
     },
     methods: {
         getTableContent: function() {
-            // Make a request to get full list of contacts
+            // Get request to show full list of existing contacts
             axios.get(URL_API_CONTACTS, HEADERS)
             .then(function (response) {
                 // handle success
@@ -46,4 +46,5 @@ var appTableContent = new Vue({
         }
     }
   })
+
 
