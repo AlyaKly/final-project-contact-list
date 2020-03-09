@@ -51,8 +51,9 @@
           <div class="field-body">
             <div class="field">
               <p class="control">
-                <input class="input" type="text" placeholder="Full Name" v-model="contactName">
+                <input class="input" :class="{'is-danger': nameError}" type="text" placeholder="Full Name" v-model="contactName">
               </p>
+              <p class="help is-danger" v-if="nameError">Please, enter Contact ful name</p>
             </div>
           </div>
         </div>
@@ -64,8 +65,9 @@
           <div class="field-body">
             <div class="field">
               <p class="control">
-                <input class="input" type="email" placeholder="email@example.com" v-model="contactEmail">
+                <input class="input" :class="{'is-danger': emailError}" type="email" placeholder="email@example.com" v-model="contactEmail">
               </p>
+              <p class="help is-danger" v-if="emailError">Please, enter Contact email address</p>
             </div>
           </div>
         </div>
@@ -77,8 +79,9 @@
           <div class="field-body">
             <div class="field">
               <p class="control">
-                <input class="input" type="tel" placeholder="(123)1234-123" v-model="contactPhone">
+                <input class="input" :class="{'is-danger': phoneError}" type="tel" placeholder="(123)1234-123" v-model="contactPhone">
               </p>
+              <p class="help is-danger" v-if="phoneError">Please, enter Contact phone number</p>
             </div>
           </div>
         </div>
