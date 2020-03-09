@@ -8,6 +8,40 @@ const HEADERS = {
 };
 
 
+var app = new Vue({
+    el: '#vueapp',
+    data: {
+      isShowModal: false,
+      contactName: '',
+      contactEmail: '',
+      contactPhone: ''
+    },
+    // mounted: function() {
+    //     this.createNewContact()
+    // },
+    methods: {
+        createNewContact: function() {
+            axios.post(URL_API_CONTACTS, {
+                fields: {
+                    Name: app.contactName,
+                    Email: app.contactEmail,
+                    Phone: app.contactPhone
+                }
+                
+            }, HEADERS)
+              .then(function (response) {
+                console.log(response);
+                app.isShowModal = false;
+                appTableContent.getTableContent();
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+        }
+    }
+  });
+
+
 // View list of existing contacts
 var appTableContent = new Vue({
     el: '#app-table-content',
