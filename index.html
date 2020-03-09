@@ -25,12 +25,82 @@
   <section class="box">
 
     <!-- Create new Contact button -->
-    <!-- <div class="buttons">
-        <button class="button is-light is-rounded">Add new Contact</button>
+    <div id="vueapp">
+
+    <div class="buttons">
+        <button class="button is-light is-rounded" v-on:click="isShowModal = true">Add new Contact</button>
         <span class="icon is-small is-left">
-          <i class="fas fa-envelope"></i>
+          <!-- <i class="fas fa-envelope"></i> -->
         </span>
-    </div> -->
+    </div>
+
+    <div class="modal" v-bind:class="{ 'is-active': isShowModal }">
+      <div class="modal-background"  v-on:click="isShowModal = false"></div>
+
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Add new contact</p>
+            <button class="delete" aria-label="close" v-on:click="isShowModal = false"></button>
+          </header>
+          <section class="modal-card-body">
+                                    <!-- Full Name -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Full Name:</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+                <input class="input" type="text" placeholder="Full Name" v-model="contactName">
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Email -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Email Address:</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+                <input class="input" type="email" placeholder="email@example.com" v-model="contactEmail">
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Phone -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Phone Number:</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+                <input class="input" type="tel" placeholder="(123)1234-123" v-model="contactPhone">
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+
+          </section>
+
+                      <footer class="modal-card-foot">
+                      <button class="button is-success" v-on:click="createNewContact">Save changes</button>
+              <button class="button" v-on:click="isShowModal = false">Cancel</button>
+            </footer>
+
+
+
+
+      </div>
+      <button class="modal-close is-large" aria-label="close"  v-on:click="isShowModal = false"></button>
+    </div>
+
+  </div>
+
 <div id="app-table-content">
     <!-- Search field -->
     <div class="field has-addons has-addons-right has-addons-halfwidth">
