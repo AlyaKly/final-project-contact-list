@@ -95,8 +95,9 @@ var appTableContent = new Vue({
     el: '#app-table-content',
     data: {
       contacts: [],
-      searchName: ''
-
+      searchName: '',
+      contactValue: '',
+      modalInfo: undefined
     },
     mounted: function() {
         this.getTableContent();
