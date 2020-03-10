@@ -1,4 +1,4 @@
-// Variables
+// JSon link and headers
 const URL_API_CONTACTS = 'https://api.airtable.com/v0/appnMM0MFP1gUsoem/contacts';
 const HEADERS = {
     headers: {
@@ -7,7 +7,18 @@ const HEADERS = {
     }
 };
 
+// VUE 
 
+/**
+ * Add New Contact form
+ * @isShown - displays Add New Contact modal form on the page
+ * @ContactName - Contact's Full Name
+ * @contactEmail - Contact's Email Address
+ * @contactPhone - Contact's Phone number
+ * @nameError - is True if the Contact Full Name is empty
+ * @emailError - is True if the Contact's Email Address is empty
+ * @phoneError - is True if the Contact's Phone Number is empty
+ */
 var app = new Vue({
     el: '#vueapp',
     data: {
@@ -20,27 +31,28 @@ var app = new Vue({
       phoneError: false,
 
     },
-    // mounted: function() {
-    //     this.createNewContact()
-    // },
     methods: {
         fieldsValidation: function () {
-            // no son vacios
+            // validattion for empty "Full Name" field 
             this.nameError = false;
             if (this.contactName === '') {
                 this.nameError = true;
             }
+            // validattion for empty "Email Address" field 
             this.emailError = false;
             if (this.contactEmail === '') {
                 this.emailError = true;
             }
+            // validattion for empty "Phone Number" field 
             this.phoneError = false;
             if (this.contactPhone === '') {
                 this.phoneError = true;
             }
         },
         createNewContact: function() {
+            // Run fields validation function
             this.fieldsValidation();
+            // Run Post request if there are no errores
             if(!this.nameError && !this.emailError && !this.phoneError){
                 axios.post(URL_API_CONTACTS, {
                     fields: {
@@ -48,12 +60,14 @@ var app = new Vue({
                         Email: app.contactEmail,
                         Phone: app.contactPhone
                     }
-                    
                 }, HEADERS)
                   .then(function (response) {
                     console.log(response);
+                    // Close the Create Contact modal form
                     app.isShowModal = false;
+                    // Refresh the list of Contacts
                     appTableContent.getTableContent();
+                    // Empty fields on the Create Contact modal form
                     app.emptyCreateForm();
                   })
                   .catch(function (error) {
@@ -62,6 +76,7 @@ var app = new Vue({
             }
 
         },
+        // Function that cleans all fields on the Create Contact modal form
         emptyCreateForm: function() {
             app.contactName = '';
             app.contactEmail = '';
@@ -71,7 +86,11 @@ var app = new Vue({
   });
 
 
-// View list of existing contacts
+/**
+ * View list of existing contacts
+ * @contacts - array with a list of all existing contacts
+ * @searchName - content of the search name field
+ */
 var appTableContent = new Vue({
     el: '#app-table-content',
     data: {
@@ -82,8 +101,8 @@ var appTableContent = new Vue({
     mounted: function() {
         this.getTableContent();
     },
-    // Search by Contact Name
     computed: {
+            // Function that searches by Contact Name
         contactSearch: function() {
             return this.contacts.filter(function(contact){
                 return contact.fields.Name != undefined ? contact.fields.Name.includes(appTableContent.searchName.charAt(0).toUpperCase() + appTableContent.searchName.slice(1)) : []
@@ -91,6 +110,7 @@ var appTableContent = new Vue({
         }
     },
     methods: {
+        // Function that returns a list of all existing contacts
         getTableContent: function() {
             // Get request to show full list of existing contacts
             axios.get(URL_API_CONTACTS, HEADERS)
