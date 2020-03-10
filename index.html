@@ -132,13 +132,17 @@
               </button>
             </td>
             <td>✏</td>
-            <td>✖</td>
+            <td>
+              <button v-on:click="deleteRecord = contact">
+                ✖
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Test View Modal Form -->
+    <!-- View Contact Modal Form -->
     <div class="modal" v-if="modalInfo" v-bind:class="{ 'is-active': modalInfo }">
       <div class="modal-background" v-on:click="modalInfo = undefined"></div>
       <div class="modal-card">
@@ -161,7 +165,7 @@
               </div>
             </div>
           </div>
-          <!-- Email -->
+          <!-- Email Address -->
           <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Email Address:</label>
@@ -174,7 +178,7 @@
               </div>
             </div>
           </div>
-          <!-- Phone -->
+          <!-- Phone Number -->
           <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Phone Number:</label>
@@ -192,6 +196,21 @@
       <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalInfo = undefined"></button> -->
     </div>
 
+
+    <!-- Delete Contact -->
+    <div class="modal" v-if="deleteRecord" v-bind:class="{ 'is-active': deleteRecord }">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <section class="modal-card-body">
+          <!-- Content ... -->
+          Do you want to delete the contact {{ deleteRecord.fields.Name }}?
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success" v-on:click="removeContact">Delete</button>
+          <button class="button" v-on:click="deleteRecord = undefined">Cancel</button>
+        </footer>
+      </div>
+    </div>
 
   </div>
     <!-- Paging for the table -->

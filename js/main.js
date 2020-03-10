@@ -97,7 +97,8 @@ var appTableContent = new Vue({
       contacts: [],
       searchName: '',
       contactValue: '',
-      modalInfo: undefined
+      modalInfo: undefined,
+      deleteRecord: undefined
     },
     mounted: function() {
         this.getTableContent();
@@ -127,6 +128,19 @@ var appTableContent = new Vue({
             .then(function () {
                 // always executed
             });
+        },
+        removeContact: function() {
+            console.log(this.deleteRecord.fields.Name)
+
+            axios.delete(URL_API_CONTACTS, HEADERS, {
+                records: [
+                    {
+                        id: this.deleteRecord.id
+                    }
+                ]
+              });
+            this.getTableContent();
+
         }
     }
   })
