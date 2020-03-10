@@ -95,8 +95,9 @@
       <button class="modal-close is-large" aria-label="close"  v-on:click="isShowModal = false"></button>
     </div>
   </div>
-<!-- Table with a list of Contacts -->
-<div id="app-table-content">
+  
+  <!-- Table with a list of Contacts -->
+  <div id="app-table-content">
     <!-- Search by Name field -->
     <div class="field has-addons has-addons-right has-addons-halfwidth">
       <p class="control has-icons-left">
@@ -125,13 +126,73 @@
             <td> {{ contact.fields.Name }} </td>
             <td> {{ contact.fields.Email }} </td>
             <td> {{ contact.fields.Phone }} </td>
-            <td>📖</td>
+            <td>
+              <button v-on:click="modalInfo = contact">
+                📖
+              </button>
+            </td>
             <td>✏</td>
             <td>✖</td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <!-- Test View Modal Form -->
+    <div class="modal" v-if="modalInfo" v-bind:class="{ 'is-active': modalInfo }">
+      <div class="modal-background" v-on:click="modalInfo = undefined"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">View Contact</p>
+          <button class="delete" aria-label="close" v-on:click="modalInfo = undefined"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Content ... -->
+          <!-- Full Name -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Full Name:</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input is-static" type="text" :value="modalInfo.fields.Name" readonly>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Email -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Email Address:</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input is-static" type="email" :value="modalInfo.fields.Email" readonly>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Phone -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Phone Number:</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input is-static" type="tel" :value="modalInfo.fields.Phone" readonly>
+                </p>
+              </div>
+            </div>
+          </div>
+  
+      </div>
+      <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalInfo = undefined"></button> -->
+    </div>
+
+
   </div>
     <!-- Paging for the table -->
     <!-- <div>
