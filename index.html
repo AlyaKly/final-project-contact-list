@@ -26,83 +26,78 @@
 
     <!-- Create new Contact button -->
     <div id="vueapp">
-
-    <div class="buttons">
+      <div class="buttons">
         <button class="button is-light is-rounded" v-on:click="isShowModal = true">Add new Contact</button>
         <span class="icon is-small is-left">
           <!-- <i class="fas fa-envelope"></i> -->
         </span>
-    </div>
+      </div>
 
-    <div class="modal" v-bind:class="{ 'is-active': isShowModal }">
-      <div class="modal-background"  v-on:click="isShowModal = false"></div>
-
+      <!-- Create Contact modal form =>> will be displayed when on the Add New Contact button click -->
+      <div class="modal" v-bind:class="{ 'is-active': isShowModal }">
+        <div class="modal-background"  v-on:click="isShowModal = false"></div>
         <div class="modal-card">
           <header class="modal-card-head">
             <p class="modal-card-title">Add new contact</p>
             <button class="delete" aria-label="close" v-on:click="isShowModal = false"></button>
           </header>
+          <!-- Modal form content -->
           <section class="modal-card-body">
-                                    <!-- Full Name -->
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Full Name:</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control">
-                <input class="input" type="text" placeholder="Full Name" v-model="contactName">
-              </p>
+            <!-- Full Name field -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Full Name:</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <p class="control">
+                    <input class="input" :class="{'is-danger': nameError}" type="text" placeholder="Full Name" v-model="contactName">
+                  </p>
+                  <p class="help is-danger" v-if="nameError">Please, enter Contact full name</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <!-- Email -->
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Email Address:</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control">
-                <input class="input" type="email" placeholder="email@example.com" v-model="contactEmail">
-              </p>
+            <!-- Email Address field -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Email Address:</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <p class="control">
+                    <input class="input" :class="{'is-danger': emailError}" type="email" placeholder="email@example.com" v-model="contactEmail">
+                  </p>
+                  <p class="help is-danger" v-if="emailError">Please, enter Contact email address</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <!-- Phone -->
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Phone Number:</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control">
-                <input class="input" type="tel" placeholder="(123)1234-123" v-model="contactPhone">
-              </p>
+            <!-- Phone Number field -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Phone Number:</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <p class="control">
+                    <input class="input" :class="{'is-danger': phoneError}" type="tel" placeholder="(123)1234-123" v-model="contactPhone">
+                  </p>
+                  <p class="help is-danger" v-if="phoneError">Please, enter Contact phone number</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-
-
-
           </section>
-
-                      <footer class="modal-card-foot">
-                      <button class="button is-success" v-on:click="createNewContact">Save changes</button>
-              <button class="button" v-on:click="isShowModal = false">Cancel</button>
-            </footer>
-
-
-
-
+          <!-- Modal form footer with Save and Cancel buttons -->
+          <footer class="modal-card-foot">
+            <button class="button is-success" v-on:click="createNewContact">Create</button>
+            <button class="button" v-on:click="isShowModal = false">Cancel</button>
+          </footer>
       </div>
       <button class="modal-close is-large" aria-label="close"  v-on:click="isShowModal = false"></button>
     </div>
-
   </div>
-
+<!-- Table with a list of Contacts -->
 <div id="app-table-content">
-    <!-- Search field -->
+    <!-- Search by Name field -->
     <div class="field has-addons has-addons-right has-addons-halfwidth">
       <p class="control has-icons-left">
         <input v-model="searchName" class="input is-rounded" type="text" placeholder="Search...">
@@ -112,7 +107,7 @@
       </p>
     </div>
  
-    <!-- Table with a list of contact -->
+    <!-- Table with contact -->
     <div class="table-container">
       <table class="table is-striped is-narrow is-fullwidth">
         <thead class="has-background-grey-lighter">
