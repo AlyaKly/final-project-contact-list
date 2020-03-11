@@ -131,14 +131,22 @@
                 📖
               </button>
             </td>
-            <td>✏</td>
-            <td>✖</td>
+            <td>
+              <button v-on:click="modalEdit = contact">
+                ✏
+              </button> 
+            </td>
+            <td>
+              <button v-on:click="deleteRecord = contact">
+                ✖
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Test View Modal Form -->
+    <!-- View Contact Modal Form -->
     <div class="modal" v-if="modalInfo" v-bind:class="{ 'is-active': modalInfo }">
       <div class="modal-background" v-on:click="modalInfo = undefined"></div>
       <div class="modal-card">
@@ -161,7 +169,7 @@
               </div>
             </div>
           </div>
-          <!-- Email -->
+          <!-- Email Address -->
           <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Email Address:</label>
@@ -174,7 +182,7 @@
               </div>
             </div>
           </div>
-          <!-- Phone -->
+          <!-- Phone Number -->
           <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Phone Number:</label>
@@ -187,11 +195,86 @@
               </div>
             </div>
           </div>
-  
+        </section>
       </div>
       <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalInfo = undefined"></button> -->
     </div>
 
+        <!-- Edit Contact Modal Form -->
+        <div class="modal" v-if="modalEdit" v-bind:class="{ 'is-active': modalEdit }">
+          <div class="modal-background" v-on:click="modalEdit = undefined"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Edit Contact</p>
+              <button class="delete" aria-label="close" v-on:click="modalEdit = undefined"></button>
+            </header>
+            <section class="modal-card-body">
+              <!-- Content ... -->
+              <!-- Full Name -->
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Full Name:</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <p class="control">
+                      <input class="input" type="text" :value="modalEdit.fields.Name" v-model="editName">
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Email Address -->
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Email Address:</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <p class="control">
+                      <input class="input" type="email" :value="modalEdit.fields.Email" v-model="editEmail">
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Phone Number -->
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Phone Number:</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <p class="control">
+                      <input class="input" type="tel" :value="modalEdit.fields.Phone" v-model="editPhone">
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          <!-- Modal form footer with Save and Cancel buttons -->
+          <footer class="modal-card-foot">
+            <button class="button is-success" v-on:click="updateContact">Save</button>
+            <button class="button" v-on:click="modalEdit = undefined">Cancel</button>
+          </footer>
+          </div>
+          <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalEdit = undefined"></button> -->
+        </div>
+    
+
+
+    <!-- Delete Contact -->
+    <div class="modal" v-if="deleteRecord" v-bind:class="{ 'is-active': deleteRecord }">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <section class="modal-card-body">
+          <!-- Content ... -->
+          Do you want to delete the contact {{ deleteRecord.fields.Name }}?
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success" v-on:click="removeContact">Delete</button>
+          <button class="button" v-on:click="deleteRecord = undefined">Cancel</button>
+        </footer>
+      </div>
+    </div>
 
   </div>
     <!-- Paging for the table -->

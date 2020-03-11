@@ -29,7 +29,6 @@ var app = new Vue({
       nameError: false,
       emailError: false,
       phoneError: false,
-
     },
     methods: {
         fieldsValidation: function () {
@@ -90,6 +89,9 @@ var app = new Vue({
  * View list of existing contacts
  * @contacts - array with a list of all existing contacts
  * @searchName - content of the search name field
+ * @modalInfo - if True shows the View Contact modal form
+ * @deleteRecord - if True shows the Delete Contact modal form
+ * @modalEdit - if True shows Edit Contact modal form
  */
 var appTableContent = new Vue({
     el: '#app-table-content',
@@ -97,17 +99,32 @@ var appTableContent = new Vue({
       contacts: [],
       searchName: '',
       contactValue: '',
-      modalInfo: undefined
+      modalInfo: undefined,
+      deleteRecord: undefined,
+      modalEdit: undefined,
+      editName: undefined,
+      editEmail: undefined,
+      editPhone: undefined
     },
     mounted: function() {
+        // Display table with existing contacts on page loading
         this.getTableContent();
     },
     computed: {
-            // Function that searches by Contact Name
+        // Function that searches by Contact Name
         contactSearch: function() {
             return this.contacts.filter(function(contact){
                 return contact.fields.Name != undefined ? contact.fields.Name.includes(appTableContent.searchName.charAt(0).toUpperCase() + appTableContent.searchName.slice(1)) : []
             });
+        }
+    },
+    watch: {
+        modalEdit: function(newInfo) {
+            this.editName = newInfo.fields.Name;
+            this.editEmail = newInfo.fields.Email;
+            this.editPhone = newInfo.fields.Phone;
+
+            // console.log(this.editName);
         }
     },
     methods: {
@@ -127,6 +144,49 @@ var appTableContent = new Vue({
             .then(function () {
                 // always executed
             });
+        },
+        updateContact: function() {
+            console.log("here will be an update");
+            console.log(this.editName);
+
+
+            axios.patch(URL_API_CONTACTS, {
+                "records": [
+                    {
+                      "id": "recOF8ETUOSAeP2kA",
+                      "fields": {
+                        "Name": this.editName,
+                        "Email": this.editEmail,
+                        "Phone": this.editPhone
+                      }
+                    }
+                  ]
+            }, HEADERS)
+            .then((response) => {
+                   console.log(response);
+            });
+            appTableContent.modalEdit = undefined;
+            this.getTableContent();
+        },
+        // Function that removes selected contact from the list
+        removeContact: function() {
+            // Contact ID value
+            let recordID = this.deleteRecord.id;
+            // Delete Request to remove the contact by contact ID
+            axios.delete(URL_API_CONTACTS, {
+                headers: {
+                    'Authorization': 'Bearer keyY3rOI3oiWEV6uf',
+                    'Content-Type': 'application/json'
+                },
+                params: {
+                        records: [recordID]
+                        }
+                });
+                // Close the modal form
+                appTableContent.deleteRecord = undefined;
+                // Refresh the table with contacts
+                this.getTableContent();
+
         }
     }
   })
