@@ -218,8 +218,9 @@
                 <div class="field-body">
                   <div class="field">
                     <p class="control">
-                      <input class="input" type="text" :value="modalEdit.fields.Name" v-model="editName">
+                      <input class="input" :class="{'is-danger': editNameError}" type="text" v-model="editName">
                     </p>
+                    <p class="help is-danger" v-if="editNameError">Contact name cannot be empty</p>
                   </div>
                 </div>
               </div>
@@ -231,8 +232,9 @@
                 <div class="field-body">
                   <div class="field">
                     <p class="control">
-                      <input class="input" type="email" :value="modalEdit.fields.Email" v-model="editEmail">
+                      <input class="input" :class="{'is-danger': editEmailError}" type="email" v-model="editEmail">
                     </p>
+                    <p class="help is-danger" v-if="editEmailError">Contact email cannot be empty</p>
                   </div>
                 </div>
               </div>
@@ -244,8 +246,9 @@
                 <div class="field-body">
                   <div class="field">
                     <p class="control">
-                      <input class="input" type="tel" :value="modalEdit.fields.Phone" v-model="editPhone">
+                      <input class="input" :class="{'is-danger': editPhoneError}" type="tel" v-model="editPhone">
                     </p>
+                    <p class="help is-danger" v-if="editPhoneError">Contact Phone number cannot be empty</p>
                   </div>
                 </div>
               </div>
@@ -258,7 +261,6 @@
           </div>
           <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalEdit = undefined"></button> -->
         </div>
-    
 
 
     <!-- Delete Contact -->
@@ -267,7 +269,7 @@
       <div class="modal-card">
         <section class="modal-card-body">
           <!-- Content ... -->
-          Do you want to delete the contact {{ deleteRecord.fields.Name }}?
+          Do you want to delete the contact <strong>{{ deleteRecord.fields.Name }}</strong>?
         </section>
         <footer class="modal-card-foot">
           <button class="button is-success" v-on:click="removeContact">Delete</button>
