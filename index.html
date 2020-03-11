@@ -131,7 +131,11 @@
                 📖
               </button>
             </td>
-            <td>✏</td>
+            <td>
+              <button v-on:click="modalEdit = contact">
+                ✏
+              </button> 
+            </td>
             <td>
               <button v-on:click="deleteRecord = contact">
                 ✖
@@ -191,10 +195,70 @@
               </div>
             </div>
           </div>
-  
+        </section>
       </div>
       <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalInfo = undefined"></button> -->
     </div>
+
+        <!-- Edit Contact Modal Form -->
+        <div class="modal" v-if="modalEdit" v-bind:class="{ 'is-active': modalEdit }">
+          <div class="modal-background" v-on:click="modalEdit = undefined"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Edit Contact</p>
+              <button class="delete" aria-label="close" v-on:click="modalEdit = undefined"></button>
+            </header>
+            <section class="modal-card-body">
+              <!-- Content ... -->
+              <!-- Full Name -->
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Full Name:</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <p class="control">
+                      <input class="input is-static" type="text" :value="modalEdit.fields.Name">
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Email Address -->
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Email Address:</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <p class="control">
+                      <input class="input is-static" type="email" :value="modalEdit.fields.Email">
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Phone Number -->
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Phone Number:</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <p class="control">
+                      <input class="input is-static" type="tel" :value="modalEdit.fields.Phone">
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+                      <!-- Modal form footer with Save and Cancel buttons -->
+          <footer class="modal-card-foot">
+            <button class="button is-success" v-on:click="createNewContact">Save</button>
+            <button class="button" v-on:click="modalEdit = undefined">Cancel</button>
+          </footer>
+          </div>
+          <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalEdit = undefined"></button> -->
+        </div>
+    
 
 
     <!-- Delete Contact -->
