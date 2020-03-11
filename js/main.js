@@ -31,6 +31,7 @@ var app = new Vue({
       phoneError: false,
     },
     methods: {
+        // Function that checks empty fields on the Create Contact modal form
         fieldsValidation: function () {
             // validattion for empty "Full Name" field 
             this.nameError = false;
@@ -48,11 +49,13 @@ var app = new Vue({
                 this.phoneError = true;
             }
         },
+        // Function that creates new Contact
         createNewContact: function() {
             // Run fields validation function
             this.fieldsValidation();
             // Run Post request if there are no errores
             if(!this.nameError && !this.emailError && !this.phoneError){
+                // POST Request
                 axios.post(URL_API_CONTACTS, {
                     fields: {
                         Name: app.contactName,
@@ -60,7 +63,7 @@ var app = new Vue({
                         Phone: app.contactPhone
                     }
                 }, HEADERS)
-                  .then(function (response) {
+                .then(function (response) {
                     console.log(response);
                     // Close the Create Contact modal form
                     app.isShowModal = false;
@@ -68,10 +71,10 @@ var app = new Vue({
                     appTableContent.getTableContent();
                     // Empty fields on the Create Contact modal form
                     app.emptyCreateForm();
-                  })
-                  .catch(function (error) {
+                })
+                .catch(function (error) {
                     console.log(error);
-                  });
+                });
             }
 
         },
@@ -82,7 +85,7 @@ var app = new Vue({
             app.contactPhone = '';
         }
     }
-  });
+});
 
 
 /**
@@ -95,6 +98,10 @@ var app = new Vue({
  * @editName - contact Name for Watching
  * @editEmail - contact Email for Watching
  * @editPhone - contact Phone number for Watching
+ * @editContactID - contact ID for PATCH Request
+ * @editNameError - is True if edited Contact Name is empty
+ * @editEmailError - is True if edited Email is empty
+ * @editPhoneError - is True if edited Pone number is empty
  */
 var appTableContent = new Vue({
     el: '#app-table-content',
@@ -141,7 +148,7 @@ var appTableContent = new Vue({
     methods: {
         // Function that returns a list of all existing contacts
         getTableContent: function() {
-            // Get request to show full list of existing contacts
+            // GET request
             axios.get(URL_API_CONTACTS, HEADERS)
             .then(function (response) {
                 // handle success
@@ -204,7 +211,7 @@ var appTableContent = new Vue({
         removeContact: function() {
             // Contact ID value
             let recordID = this.deleteRecord.id;
-            // Delete Request to remove the contact by contact ID
+            // DELETE Request
             axios.delete(URL_API_CONTACTS, {
                 headers: {
                     'Authorization': 'Bearer keyY3rOI3oiWEV6uf',
@@ -214,10 +221,10 @@ var appTableContent = new Vue({
                         records: [recordID]
                         }
                 });
-                // Close the modal form
-                appTableContent.deleteRecord = undefined;
-                // Refresh the table with contacts
-                this.getTableContent();
+            // Close the modal form
+            appTableContent.deleteRecord = undefined;
+            // Refresh the table with contacts
+            this.getTableContent();
 
         }
     }
