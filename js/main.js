@@ -104,7 +104,8 @@ var appTableContent = new Vue({
       modalEdit: undefined,
       editName: undefined,
       editEmail: undefined,
-      editPhone: undefined
+      editPhone: undefined,
+      editContactID: undefined
     },
     mounted: function() {
         // Display table with existing contacts on page loading
@@ -123,8 +124,7 @@ var appTableContent = new Vue({
             this.editName = newInfo.fields.Name;
             this.editEmail = newInfo.fields.Email;
             this.editPhone = newInfo.fields.Phone;
-
-            // console.log(this.editName);
+            this.editContactID = newInfo.id;
         }
     },
     methods: {
@@ -145,15 +145,13 @@ var appTableContent = new Vue({
                 // always executed
             });
         },
+        // Function that updates an existing contact
         updateContact: function() {
-            console.log("here will be an update");
-            console.log(this.editName);
-
-
+            // PATCH Request to udplate selected contact
             axios.patch(URL_API_CONTACTS, {
                 "records": [
                     {
-                      "id": "recOF8ETUOSAeP2kA",
+                      "id": this.editContactID,
                       "fields": {
                         "Name": this.editName,
                         "Email": this.editEmail,
@@ -165,7 +163,9 @@ var appTableContent = new Vue({
             .then((response) => {
                    console.log(response);
             });
+            // Close the Edit Contact modal form
             appTableContent.modalEdit = undefined;
+            // Refresh the contacts list with new updated contact
             this.getTableContent();
         },
         // Function that removes selected contact from the list
