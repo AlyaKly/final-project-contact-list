@@ -218,7 +218,7 @@
                 <div class="field-body">
                   <div class="field">
                     <p class="control">
-                      <input class="input is-static" type="text" :value="modalEdit.fields.Name">
+                      <input class="input" type="text" :value="modalEdit.fields.Name" v-model="editName">
                     </p>
                   </div>
                 </div>
@@ -231,7 +231,7 @@
                 <div class="field-body">
                   <div class="field">
                     <p class="control">
-                      <input class="input is-static" type="email" :value="modalEdit.fields.Email">
+                      <input class="input" type="email" :value="modalEdit.fields.Email" v-model="editEmail">
                     </p>
                   </div>
                 </div>
@@ -244,15 +244,15 @@
                 <div class="field-body">
                   <div class="field">
                     <p class="control">
-                      <input class="input is-static" type="tel" :value="modalEdit.fields.Phone">
+                      <input class="input" type="tel" :value="modalEdit.fields.Phone" v-model="editPhone">
                     </p>
                   </div>
                 </div>
               </div>
             </section>
-                      <!-- Modal form footer with Save and Cancel buttons -->
+          <!-- Modal form footer with Save and Cancel buttons -->
           <footer class="modal-card-foot">
-            <button class="button is-success" v-on:click="createNewContact">Save</button>
+            <button class="button is-success" v-on:click="updateContact">Save</button>
             <button class="button" v-on:click="modalEdit = undefined">Cancel</button>
           </footer>
           </div>
