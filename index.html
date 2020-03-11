@@ -258,8 +258,6 @@
           </div>
           <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalEdit = undefined"></button> -->
         </div>
-    
-
 
     <!-- Delete Contact -->
     <div class="modal" v-if="deleteRecord" v-bind:class="{ 'is-active': deleteRecord }">
@@ -277,82 +275,27 @@
     </div>
 
   </div>
-    <!-- Paging for the table -->
-    <!-- <div>
-      <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
-        <a class="pagination-previous">Previous</a>
-        <a class="pagination-next">Next page</a>
-        <ul class="pagination-list">
-          <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-          <li><span class="pagination-ellipsis">&hellip;</span></li>
-          <li><a class="pagination-link" aria-label="Goto page 5">5</a></li>
-          <li><a class="pagination-link is-current" aria-label="Page 6" aria-current="page">6</a></li>
-          <li><a class="pagination-link" aria-label="Goto page 7">7</a></li>
-          <li><span class="pagination-ellipsis">&hellip;</span></li>
-          <li><a class="pagination-link" aria-label="Goto page 16">16</a></li>
-        </ul>
-      </nav>
-    </div> -->
   </section>
 
+      <!-- Paging for the table -->
+      <div>
+        <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
+          <a class="pagination-previous">Previous</a>
+          <a class="pagination-next">Next page</a>
+          <ul class="pagination-list">
+            <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+            <li><a class="pagination-link" aria-label="Goto page 5">5</a></li>
+            <li><a class="pagination-link is-current" aria-label="Page 6" aria-current="page">6</a></li>
+            <li><a class="pagination-link" aria-label="Goto page 7">7</a></li>
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+            <li><a class="pagination-link" aria-label="Goto page 16">16</a></li>
+          </ul>
+        </nav>
+      </div>
+  
 
-  <!-- View contact modal card -->
-  <div class="modal">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">View Contact</p>
-        <button class="delete" aria-label="close"></button>
-      </header>
-      <section class="modal-card-body">
-        <!-- Content ... -->
-        <!-- Full Name -->
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Full Name:</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control">
-                <input class="input is-static" type="text" value="test name" readonly>
-              </p>
-            </div>
-          </div>
-        </div>
-        <!-- Email -->
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Email Address:</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control">
-                <input class="input is-static" type="email" value="me@example.com" readonly>
-              </p>
-            </div>
-          </div>
-        </div>
-        <!-- Phone -->
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Phone Number:</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control">
-                <input class="input is-static" type="tel" value="(123)1234-123" readonly>
-              </p>
-            </div>
-          </div>
-        </div>
 
-      </section>
-      <!-- <footer class="modal-card-foot">
-        <button class="button is-success">Save changes</button>
-        <button class="button">Cancel</button>
-      </footer> -->
-    </div>
-  </div>
 
 </body>
 </html>
