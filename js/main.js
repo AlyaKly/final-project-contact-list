@@ -92,6 +92,9 @@ var app = new Vue({
  * @modalInfo - if True shows the View Contact modal form
  * @deleteRecord - if True shows the Delete Contact modal form
  * @modalEdit - if True shows Edit Contact modal form
+ * @editName - contact Name for Watching
+ * @editEmail - contact Email for Watching
+ * @editPhone - contact Phone number for Watching
  */
 var appTableContent = new Vue({
     el: '#app-table-content',
@@ -106,6 +109,9 @@ var appTableContent = new Vue({
       editEmail: undefined,
       editPhone: undefined,
       editContactID: undefined,
+      editNameError: false,
+      editEmailError: false,
+      editPhoneError: false,
       page: 1,
       perPage: 7
     },
@@ -126,10 +132,15 @@ var appTableContent = new Vue({
     },
     watch: {
         modalEdit: function(newInfo) {
-            this.editName = newInfo.fields.Name;
-            this.editEmail = newInfo.fields.Email;
-            this.editPhone = newInfo.fields.Phone;
-            this.editContactID = newInfo.id;
+            this.editNameError = false;
+            this.editEmailError = false;
+            this.editPhoneError = false;
+            if (newInfo != undefined) {
+                this.editName = newInfo.fields.Name;
+                this.editEmail = newInfo.fields.Email;
+                this.editPhone = newInfo.fields.Phone;
+                this.editContactID = newInfo.id;
+            }
         }
     },
     methods: {
@@ -139,7 +150,6 @@ var appTableContent = new Vue({
             axios.get(URL_API_CONTACTS, HEADERS)
             .then(function (response) {
                 // handle success
-                console.log(response.data.records);
                 appTableContent.contacts = response.data.records;
             })
             .catch(function (error) {
@@ -150,28 +160,50 @@ var appTableContent = new Vue({
                 // always executed
             });
         },
+        editFieldsValidation: function () {
+            // validattion for empty "Full Name" field 
+            this.editNameError = false;
+            if (this.editName === '') {
+                this.editNameError = true;
+            }
+            // validattion for empty "Email Address" field 
+            this.editEmailError = false;
+            if (this.editEmail === '') {
+                this.editEmailError = true;
+            }
+            // validattion for empty "Phone Number" field 
+            this.editPhoneError = false;
+            if (this.editPhone === '') {
+                this.editPhoneError = true;
+            }
+        },
         // Function that updates an existing contact
         updateContact: function() {
-            // PATCH Request to udplate selected contact
-            axios.patch(URL_API_CONTACTS, {
-                "records": [
-                    {
-                      "id": this.editContactID,
-                      "fields": {
-                        "Name": this.editName,
-                        "Email": this.editEmail,
-                        "Phone": this.editPhone
-                      }
-                    }
-                  ]
-            }, HEADERS)
-            .then((response) => {
-                   console.log(response);
-            });
-            // Close the Edit Contact modal form
-            appTableContent.modalEdit = undefined;
-            // Refresh the contacts list with new updated contact
-            this.getTableContent();
+            // Run fields validation function
+            this.editFieldsValidation();
+            // Run Patch request if there are no errores
+            if(!this.editNameError && !this.editEmailError && !this.editPhoneError){
+                // PATCH Request to udplate selected contact
+                axios.patch(URL_API_CONTACTS, {
+                    "records": [
+                        {
+                            "id": this.editContactID,
+                            "fields": {
+                                "Name": this.editName,
+                                "Email": this.editEmail,
+                                "Phone": this.editPhone
+                            }
+                        }
+                    ]
+                }, HEADERS)
+                .then((response) => {
+                    console.log(response);
+                });
+                // Close the Edit Contact modal form
+                appTableContent.modalEdit = undefined;
+                // Refresh the contacts list with new updated contact
+                this.getTableContent();
+            }
         },
         // Function that removes selected contact from the list
         removeContact: function() {
