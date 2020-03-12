@@ -105,7 +105,9 @@ var appTableContent = new Vue({
       editName: undefined,
       editEmail: undefined,
       editPhone: undefined,
-      editContactID: undefined
+      editContactID: undefined,
+      startPage: 1,
+      perPage: 10
     },
     mounted: function() {
         // Display table with existing contacts on page loading
@@ -117,7 +119,10 @@ var appTableContent = new Vue({
             return this.contacts.filter(function(contact){
                 return contact.fields.Name != undefined ? contact.fields.Name.includes(appTableContent.searchName.charAt(0).toUpperCase() + appTableContent.searchName.slice(1)) : []
             });
-        }
+        },
+        getPages: function() {
+            return Math.ceil(this.contacts.length / this.perPage);
+        } 
     },
     watch: {
         modalEdit: function(newInfo) {
