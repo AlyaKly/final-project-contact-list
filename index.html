@@ -276,10 +276,10 @@
 
     <!-- Pagination -->
     <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
-      <a class="pagination-previous" :disabled="startPage == 1" @click.prevent="startPage -= 1">Previous</a>
-      <a class="pagination-next" :disabled="startPage * perPage / contacts.length > 1" @click.prevent="startPage += 1">Next page</a>
+      <a class="pagination-previous" :disabled="page == 1" @click.prevent="page -= 1">Previous</a>
+      <a class="pagination-next" :disabled="page * perPage / contacts.length > 1" @click.prevent="page += 1">Next page</a>
       <ul class="pagination-list">
-        <li><a class="pagination-link" v-for="(tmp, index) in Array(getPages).fill()" @click.prevent="startPage = 1 + index">{{index+1}}</a></li>
+        <li><a class="pagination-link" v-for="(tmp, index) in Array(getPages).fill()" @click.prevent="page = 1 + index">{{index+1}}</a></li>
     </nav>
     
 

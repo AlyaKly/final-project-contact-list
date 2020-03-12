@@ -106,8 +106,8 @@ var appTableContent = new Vue({
       editEmail: undefined,
       editPhone: undefined,
       editContactID: undefined,
-      startPage: 1,
-      perPage: 10
+      page: 1,
+      perPage: 7
     },
     mounted: function() {
         // Display table with existing contacts on page loading
