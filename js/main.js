@@ -238,6 +238,7 @@ var appTableContent = new Vue({
                 this.getTableContent();
 
         },
+        // 
         goToPreviousPage: function() {
             if(this.page != 1) {
                 return this.page -= 1
