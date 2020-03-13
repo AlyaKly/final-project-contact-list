@@ -35,11 +35,11 @@
 
       <!-- Create Contact modal form =>> will be displayed when on the Add New Contact button click -->
       <div class="modal" v-bind:class="{ 'is-active': isShowModal }">
-        <div class="modal-background"  v-on:click="isShowModal = false"></div>
+        <div class="modal-background" v-on:click="isShowModal = false; emptyCreateForm()"></div>
         <div class="modal-card">
           <header class="modal-card-head">
             <p class="modal-card-title">Add new contact</p>
-            <button class="delete" aria-label="close" v-on:click="isShowModal = false"></button>
+            <button class="delete" aria-label="close" v-on:click="isShowModal = false; emptyCreateForm()"></button>
           </header>
           <!-- Modal form content -->
           <section class="modal-card-body">
@@ -51,7 +51,7 @@
               <div class="field-body">
                 <div class="field">
                   <p class="control">
-                    <input class="input" :class="{'is-danger': nameError}" type="text" placeholder="Full Name" v-model="contactName">
+                    <input class="input" v-on:input="nameError = false" :class="{'is-danger': nameError}" type="text" placeholder="Full Name" v-model="contactName">
                   </p>
                   <p class="help is-danger" v-if="nameError">Please, enter Contact full name</p>
                 </div>
@@ -65,7 +65,7 @@
               <div class="field-body">
                 <div class="field">
                   <p class="control">
-                    <input class="input" :class="{'is-danger': emailError}" type="email" placeholder="email@example.com" v-model="contactEmail">
+                    <input class="input" v-on:input="emailError = false" :class="{'is-danger': emailError}" type="email" placeholder="email@example.com" v-model="contactEmail">
                   </p>
                   <p class="help is-danger" v-if="emailError">Please, enter Contact email address</p>
                 </div>
@@ -79,7 +79,7 @@
               <div class="field-body">
                 <div class="field">
                   <p class="control">
-                    <input class="input" :class="{'is-danger': phoneError}" type="tel" placeholder="(123)1234-123" v-model="contactPhone">
+                    <input class="input" v-on:input="phoneError = false" :class="{'is-danger': phoneError}" type="tel" placeholder="(123)1234-123" v-model="contactPhone">
                   </p>
                   <p class="help is-danger" v-if="phoneError">Please, enter Contact phone number</p>
                 </div>
@@ -89,209 +89,206 @@
           <!-- Modal form footer with Save and Cancel buttons -->
           <footer class="modal-card-foot">
             <button class="button is-success" v-on:click="createNewContact">Create</button>
-            <button class="button" v-on:click="isShowModal = false">Cancel</button>
+            <button class="button" v-on:click="isShowModal = false; emptyCreateForm()">Cancel</button>
           </footer>
         </div>
-        <button class="modal-close is-large" aria-label="close"  v-on:click="isShowModal = false"></button>
+        <button class="modal-close is-large" aria-label="close"  v-on:click="isShowModal = false; emptyCreateForm()"></button>
       </div>
     </div>
   
-    <!-- Table with a list of Contacts -->
-    <div id="app-table-content">
-
-      <!-- Search by Name field -->
-      <div class="field has-addons has-addons-right has-addons-halfwidth">
-        <p class="control has-icons-left">
-          <input v-model="searchName" class="input is-rounded" type="text" placeholder="Search...">
-          <span class="icon is-small is-left">
-            <!-- <i class="fas fa-envelope"></i> -->
-          </span>
-        </p>
-      </div>
- 
-      <!-- Table with contact -->
-      <div class="table-container">
-        <table class="table is-striped is-narrow is-fullwidth">
-          <thead class="has-background-grey-lighter">
-            <tr>
-              <th>Full Name</th>
-              <th>Email Address</th>
-              <th>Phone Number</th>
-              <th>View</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="contact in contactSearch">
-              <td> {{ contact.fields.Name }} </td>
-              <td> {{ contact.fields.Email }} </td>
-              <td> {{ contact.fields.Phone }} </td>
-              <td>
-                <button v-on:click="modalInfo = contact">📖</button>
-              </td>
-              <td>
-                <button v-on:click="modalEdit = contact">✏</button> 
-              </td>
-              <td>
-                <button v-on:click="deleteRecord = contact">✖</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- View Contact Modal Form -->
-      <div class="modal" v-if="modalInfo" v-bind:class="{ 'is-active': modalInfo }">
-        <div class="modal-background" v-on:click="modalInfo = undefined"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">View Contact</p>
-            <button class="delete" aria-label="close" v-on:click="modalInfo = undefined"></button>
-          </header>
-          <section class="modal-card-body">
-            <!-- Content ... -->
-            <!-- Full Name -->
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Full Name:</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <p class="control">
-                    <input class="input is-static" type="text" :value="modalInfo.fields.Name" readonly>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <!-- Email Address -->
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Email Address:</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <p class="control">
-                    <input class="input is-static" type="email" :value="modalInfo.fields.Email" readonly>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <!-- Phone Number -->
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Phone Number:</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <p class="control">
-                    <input class="input is-static" type="tel" :value="modalInfo.fields.Phone" readonly>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-        <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalInfo = undefined"></button> -->
-      </div>
-
-      <!-- Edit Contact Modal Form -->
-      <div class="modal" v-if="modalEdit" v-bind:class="{ 'is-active': modalEdit }">
-        <div class="modal-background" v-on:click="modalEdit = undefined"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Edit Contact</p>
-            <button class="delete" aria-label="close" v-on:click="modalEdit = undefined"></button>
-          </header>
-          <section class="modal-card-body">
-            <!-- Content ... -->
-            <!-- Full Name -->
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Full Name:</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <p class="control">
-                    <input class="input" :class="{'is-danger': editNameError}" type="text" v-model="editName">
-                  </p>
-                  <p class="help is-danger" v-if="editNameError">Contact name cannot be empty</p>
-                </div>
-              </div>
-            </div>
-            <!-- Email Address -->
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Email Address:</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <p class="control">
-                    <input class="input" :class="{'is-danger': editEmailError}" type="email" v-model="editEmail">
-                  </p>
-                  <p class="help is-danger" v-if="editEmailError">Contact email cannot be empty</p>
-                </div>
-              </div>
-            </div>
-            <!-- Phone Number -->
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Phone Number:</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <p class="control">
-                    <input class="input" :class="{'is-danger': editPhoneError}" type="tel" v-model="editPhone">
-                  </p>
-                  <p class="help is-danger" v-if="editPhoneError">Contact Phone number cannot be empty</p>
-                </div>
-              </div>
-            </div>
-          </section>
-          <!-- Modal form footer with Save and Cancel buttons -->
-          <footer class="modal-card-foot">
-            <button class="button is-success" v-on:click="updateContact">Save</button>
-            <button class="button" v-on:click="modalEdit = undefined">Cancel</button>
-          </footer>
-        </div>
-        <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalEdit = undefined"></button> -->
-      </div>
-
-      <!-- Delete Contact -->
-      <div class="modal" v-if="deleteRecord" v-bind:class="{ 'is-active': deleteRecord }">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <section class="modal-card-body">
-            <!-- Content ... -->
-            Do you want to delete the contact <strong>{{ deleteRecord.fields.Name }}</strong>?
-          </section>
-          <footer class="modal-card-foot">
-            <button class="button is-success" v-on:click="removeContact">Delete</button>
-            <button class="button" v-on:click="deleteRecord = undefined">Cancel</button>
-          </footer>
-        </div>
-      </div>
-
+  <!-- Table with a list of Contacts -->
+  <div id="app-table-content">
+    <!-- Search by Name field -->
+    <div class="field has-addons has-addons-right has-addons-halfwidth">
+      <p class="control has-icons-left">
+        <input v-model="searchName" class="input is-rounded" type="text" placeholder="Search...">
+        <span class="icon is-small is-left">
+          <!-- <i class="fas fa-envelope"></i> -->
+        </span>
+      </p>
     </div>
+ 
+    <!-- Table with contact -->
+    <div class="table-container">
+      <table class="table is-striped is-narrow is-fullwidth">
+        <thead class="has-background-grey-lighter">
+          <tr>
+            <th>Full Name</th>
+            <th>Email Address</th>
+            <th>Phone Number</th>
+            <th>View</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="contact in contactPerPage">
+            <td> {{ contact.fields.Name }} </td>
+            <td> {{ contact.fields.Email }} </td>
+            <td> {{ contact.fields.Phone }} </td>
+            <td>
+              <button v-on:click="modalInfo = contact">
+                📖
+              </button>
+            </td>
+            <td>
+              <button v-on:click="modalEdit = contact">
+                ✏
+              </button> 
+            </td>
+            <td>
+              <button v-on:click="deleteRecord = contact">
+                ✖
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- View Contact Modal Form -->
+    <div class="modal" v-if="modalInfo" v-bind:class="{ 'is-active': modalInfo }">
+      <div class="modal-background" v-on:click="modalInfo = undefined"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">View Contact</p>
+          <button class="delete" aria-label="close" v-on:click="modalInfo = undefined"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Content ... -->
+          <!-- Full Name -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Full Name:</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input is-static" type="text" :value="modalInfo.fields.Name" readonly>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Email Address -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Email Address:</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input is-static" type="email" :value="modalInfo.fields.Email" readonly>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Phone Number -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Phone Number:</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input is-static" type="tel" :value="modalInfo.fields.Phone" readonly>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalInfo = undefined"></button> -->
+    </div>
+
+    <!-- Edit Contact Modal Form -->
+    <div class="modal" v-if="modalEdit" v-bind:class="{ 'is-active': modalEdit }">
+      <div class="modal-background" v-on:click="modalEdit = undefined"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Edit Contact</p>
+          <button class="delete" aria-label="close" v-on:click="modalEdit = undefined"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Content ... -->
+          <!-- Full Name -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Full Name:</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input" v-on:input="editNameError = false" :class="{'is-danger': editNameError}" type="text" v-model="editName">
+                </p>
+                <p class="help is-danger" v-if="editNameError">Contact name cannot be empty</p>
+              </div>
+            </div>
+          </div>
+          <!-- Email Address -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Email Address:</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input" v-on:input="editEmailError = false" :class="{'is-danger': editEmailError}" type="email" v-model="editEmail">
+                </p>
+                <p class="help is-danger" v-if="editEmailError">Contact email cannot be empty</p>
+              </div>
+            </div>
+          </div>
+          <!-- Phone Number -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Phone Number:</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input" v-on:input="editPhoneError = false" :class="{'is-danger': editPhoneError}" type="tel" v-model="editPhone">
+                </p>
+                <p class="help is-danger" v-if="editPhoneError">Contact Phone number cannot be empty</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      <!-- Modal form footer with Save and Cancel buttons -->
+      <footer class="modal-card-foot">
+        <button class="button is-success" v-on:click="updateContact">Save</button>
+        <button class="button" v-on:click="modalEdit = undefined">Cancel</button>
+      </footer>
+      </div>
+      <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalEdit = undefined"></button> -->
+    </div>
+
+    <!-- Delete Contact -->
+    <div class="modal" v-if="deleteRecord" v-bind:class="{ 'is-active': deleteRecord }">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <section class="modal-card-body">
+          <!-- Content ... -->
+          Do you want to delete the contact <strong>{{ deleteRecord.fields.Name }}</strong>?
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success" v-on:click="removeContact">Delete</button>
+          <button class="button" v-on:click="deleteRecord = undefined">Cancel</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
+      <a class="pagination-previous" :disabled="page == 1" @click.prevent="goToPreviousPage()">Previous</a>
+      <a class="pagination-next" :disabled="contactPerPage.length < perPage" @click.prevent="goToNextPage()">Next page</a>
+      <ul class="pagination-list">
+        <li><a class="pagination-link" v-for="tmp in pagesArray" @click.prevent="page = 1 + tmp">{{tmp+1}}</a></li>
+    </nav>
+    
+
+  </div>
   </section>
 
-  <!-- Paging for the table -->
-      <!-- <div>
-        <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
-          <a class="pagination-previous">Previous</a>
-          <a class="pagination-next">Next page</a>
-          <ul class="pagination-list">
-            <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" aria-label="Goto page 5">5</a></li>
-            <li><a class="pagination-link is-current" aria-label="Page 6" aria-current="page">6</a></li>
-            <li><a class="pagination-link" aria-label="Goto page 7">7</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" aria-label="Goto page 16">16</a></li>
-          </ul>
-        </nav>
-      </div> -->
-  
 
 </body>
 </html>

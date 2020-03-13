@@ -11,7 +11,7 @@ const HEADERS = {
 
 /**
  * Add New Contact form
- * @isShown - displays Add New Contact modal form on the page
+ * @isShowModal - displays Add New Contact modal form on the page
  * @ContactName - Contact's Full Name
  * @contactEmail - Contact's Email Address
  * @contactPhone - Contact's Phone number
@@ -30,8 +30,14 @@ var app = new Vue({
       emailError: false,
       phoneError: false,
     },
+    watch: {
+        isShowModal: function() {
+            this.nameError = false;
+            this.emailError = false;
+            this.phoneError = false;
+        }
+    },
     methods: {
-        // Function that checks empty fields on the Create Contact modal form
         fieldsValidation: function () {
             // validattion for empty "Full Name" field 
             this.nameError = false;
@@ -49,13 +55,11 @@ var app = new Vue({
                 this.phoneError = true;
             }
         },
-        // Function that creates new Contact
         createNewContact: function() {
             // Run fields validation function
             this.fieldsValidation();
             // Run Post request if there are no errores
             if(!this.nameError && !this.emailError && !this.phoneError){
-                // POST Request
                 axios.post(URL_API_CONTACTS, {
                     fields: {
                         Name: app.contactName,
@@ -63,7 +67,7 @@ var app = new Vue({
                         Phone: app.contactPhone
                     }
                 }, HEADERS)
-                .then(function (response) {
+                  .then(function (response) {
                     console.log(response);
                     // Close the Create Contact modal form
                     app.isShowModal = false;
@@ -71,10 +75,10 @@ var app = new Vue({
                     appTableContent.getTableContent();
                     // Empty fields on the Create Contact modal form
                     app.emptyCreateForm();
-                })
-                .catch(function (error) {
+                  })
+                  .catch(function (error) {
                     console.log(error);
-                });
+                  });
             }
 
         },
@@ -85,7 +89,7 @@ var app = new Vue({
             app.contactPhone = '';
         }
     }
-});
+  });
 
 
 /**
@@ -98,10 +102,6 @@ var app = new Vue({
  * @editName - contact Name for Watching
  * @editEmail - contact Email for Watching
  * @editPhone - contact Phone number for Watching
- * @editContactID - contact ID for PATCH Request
- * @editNameError - is True if edited Contact Name is empty
- * @editEmailError - is True if edited Email is empty
- * @editPhoneError - is True if edited Pone number is empty
  */
 var appTableContent = new Vue({
     el: '#app-table-content',
@@ -118,7 +118,11 @@ var appTableContent = new Vue({
       editContactID: undefined,
       editNameError: false,
       editEmailError: false,
-      editPhoneError: false
+      editPhoneError: false,
+      page: 1,
+      perPage: 5,
+      pagesArray: [],
+      NUM_PAGES: 3
     },
     mounted: function() {
         // Display table with existing contacts on page loading
@@ -130,7 +134,13 @@ var appTableContent = new Vue({
             return this.contacts.filter(function(contact){
                 return contact.fields.Name != undefined ? contact.fields.Name.includes(appTableContent.searchName.charAt(0).toUpperCase() + appTableContent.searchName.slice(1)) : []
             });
-        }
+        },
+        getPages: function() {
+            return Math.ceil(this.contactSearch.length / this.perPage);
+        },
+        contactPerPage: function() {
+            return this.contactSearch.slice((this.page - 1) * this.perPage, (this.page - 1) * this.perPage + this.perPage)
+        } 
     },
     watch: {
         modalEdit: function(newInfo) {
@@ -148,10 +158,11 @@ var appTableContent = new Vue({
     methods: {
         // Function that returns a list of all existing contacts
         getTableContent: function() {
-            // GET request
+            // Get request to show full list of existing contacts
             axios.get(URL_API_CONTACTS, HEADERS)
             .then(function (response) {
                 // handle success
+                console.log(response.data.records)
                 appTableContent.contacts = response.data.records;
             })
             .catch(function (error) {
@@ -211,7 +222,7 @@ var appTableContent = new Vue({
         removeContact: function() {
             // Contact ID value
             let recordID = this.deleteRecord.id;
-            // DELETE Request
+            // Delete Request to remove the contact by contact ID
             axios.delete(URL_API_CONTACTS, {
                 headers: {
                     'Authorization': 'Bearer keyY3rOI3oiWEV6uf',
@@ -221,11 +232,32 @@ var appTableContent = new Vue({
                         records: [recordID]
                         }
                 });
-            // Close the modal form
-            appTableContent.deleteRecord = undefined;
-            // Refresh the table with contacts
-            this.getTableContent();
+                // Close the modal form
+                appTableContent.deleteRecord = undefined;
+                // Refresh the table with contacts
+                this.getTableContent();
 
+        },
+        goToPreviousPage: function() {
+            if(this.page != 1) {
+                return this.page -= 1
+            }
+        },
+        goToNextPage: function() {
+            if(this.contactPerPage.length == this.perPage) {
+                return this.page += 1
+            }
+        },
+        getCurrentPage: function() {
+            if(this.getPages.length == 1) {
+                this.pagesArray = [this.page];
+            } else if(1 < this.getPages.length < NUM_PAGES) {
+                this.pagesArray = [this.page];
+                this.pagesArray = this.pagesArray.push(this.page + 1);
+            } else {
+                this.pagesArray = [this.page];
+                this.pagesArray = this.pagesArray.unshift(this.page - 1).push(this.page + 1);
+            }
         }
     }
   })
