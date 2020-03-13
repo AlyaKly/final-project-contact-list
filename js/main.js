@@ -11,7 +11,7 @@ const HEADERS = {
 
 /**
  * Add New Contact form
- * @isShown - displays Add New Contact modal form on the page
+ * @isShowModal - displays Add New Contact modal form on the page
  * @ContactName - Contact's Full Name
  * @contactEmail - Contact's Email Address
  * @contactPhone - Contact's Phone number
@@ -29,6 +29,13 @@ var app = new Vue({
       nameError: false,
       emailError: false,
       phoneError: false,
+    },
+    watch: {
+        isShowModal: function() {
+            this.nameError = false;
+            this.emailError = false;
+            this.phoneError = false;
+        }
     },
     methods: {
         fieldsValidation: function () {
@@ -113,7 +120,9 @@ var appTableContent = new Vue({
       editEmailError: false,
       editPhoneError: false,
       page: 1,
-      perPage: 7
+      perPage: 5,
+      pagesArray: [],
+      NUM_PAGES: 3
     },
     mounted: function() {
         // Display table with existing contacts on page loading
@@ -127,7 +136,10 @@ var appTableContent = new Vue({
             });
         },
         getPages: function() {
-            return Math.ceil(this.contacts.length / this.perPage);
+            return Math.ceil(this.contactSearch.length / this.perPage);
+        },
+        contactPerPage: function() {
+            return this.contactSearch.slice((this.page - 1) * this.perPage, (this.page - 1) * this.perPage + this.perPage)
         } 
     },
     watch: {
@@ -150,6 +162,7 @@ var appTableContent = new Vue({
             axios.get(URL_API_CONTACTS, HEADERS)
             .then(function (response) {
                 // handle success
+                console.log(response.data.records)
                 appTableContent.contacts = response.data.records;
             })
             .catch(function (error) {
@@ -224,6 +237,28 @@ var appTableContent = new Vue({
                 // Refresh the table with contacts
                 this.getTableContent();
 
+        },
+        // 
+        goToPreviousPage: function() {
+            if(this.page != 1) {
+                return this.page -= 1
+            }
+        },
+        goToNextPage: function() {
+            if(this.contactPerPage.length == this.perPage) {
+                return this.page += 1
+            }
+        },
+        getCurrentPage: function() {
+            if(this.getPages.length == 1) {
+                this.pagesArray = [this.page];
+            } else if(1 < this.getPages.length < NUM_PAGES) {
+                this.pagesArray = [this.page];
+                this.pagesArray = this.pagesArray.push(this.page + 1);
+            } else {
+                this.pagesArray = [this.page];
+                this.pagesArray = this.pagesArray.unshift(this.page - 1).push(this.page + 1);
+            }
         }
     }
   })
