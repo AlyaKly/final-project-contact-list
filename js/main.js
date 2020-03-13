@@ -1,4 +1,4 @@
-// JSon link and headers
+// JSon link to the Airtable with headers
 const URL_API_CONTACTS = 'https://api.airtable.com/v0/appnMM0MFP1gUsoem/contacts';
 const HEADERS = {
     headers: {
@@ -12,9 +12,9 @@ const HEADERS = {
 /**
  * Add New Contact form
  * @isShowModal - displays Add New Contact modal form on the page
- * @ContactName - Contact's Full Name
- * @contactEmail - Contact's Email Address
- * @contactPhone - Contact's Phone number
+ * @ContactName - Contact Full Name
+ * @contactEmail - Contact Email Address
+ * @contactPhone - Contact Phone number
  * @nameError - is True if the Contact Full Name is empty
  * @emailError - is True if the Contact's Email Address is empty
  * @phoneError - is True if the Contact's Phone Number is empty
@@ -31,6 +31,7 @@ var app = new Vue({
       phoneError: false,
     },
     watch: {
+        // Clears all fields errores when the Create Contact Modal form is closed by Cancel button
         isShowModal: function() {
             this.nameError = false;
             this.emailError = false;
@@ -58,7 +59,7 @@ var app = new Vue({
         createNewContact: function() {
             // Run fields validation function
             this.fieldsValidation();
-            // Run Post request if there are no errores
+            // Run POST request if there are no errores
             if(!this.nameError && !this.emailError && !this.phoneError){
                 axios.post(URL_API_CONTACTS, {
                     fields: {
@@ -80,7 +81,6 @@ var app = new Vue({
                     console.log(error);
                   });
             }
-
         },
         // Function that cleans all fields on the Create Contact modal form
         emptyCreateForm: function() {
@@ -95,13 +95,26 @@ var app = new Vue({
 /**
  * View list of existing contacts
  * @contacts - array with a list of all existing contacts
+ * Search field
  * @searchName - content of the search name field
+ * View Contact Form
  * @modalInfo - if True shows the View Contact modal form
+ * Remove Contact Form
  * @deleteRecord - if True shows the Delete Contact modal form
+ * Edit Contact Form
  * @modalEdit - if True shows Edit Contact modal form
  * @editName - contact Name for Watching
  * @editEmail - contact Email for Watching
  * @editPhone - contact Phone number for Watching
+ * @editContactID - Contact ID required for Contact Update
+ * @editNameError - is True if new Contact Name is empty
+ * @editEmailError - is True if new Contact Email is empty
+ * @editPhoneError - is True if new Contact Phone number is empty
+ * Pagination
+ * @page - current page
+ * @perPage - number of Contacts displayed on each page
+ * @pagesArray - list of page numbers displayed
+ * @NUM_PAGES - maximum number of pages that should be displayed 
  */
 var appTableContent = new Vue({
     el: '#app-table-content',
@@ -127,6 +140,7 @@ var appTableContent = new Vue({
     mounted: function() {
         // Display table with existing contacts on page loading
         this.getTableContent();
+        this.getCurrentPage();
     },
     computed: {
         // Function that searches by Contact Name
@@ -135,18 +149,23 @@ var appTableContent = new Vue({
                 return contact.fields.Name != undefined ? contact.fields.Name.includes(appTableContent.searchName.charAt(0).toUpperCase() + appTableContent.searchName.slice(1)) : []
             });
         },
+        // Function that gets total number of pages for the table
         getPages: function() {
+            console.log(this.contactSearch.length)
             return Math.ceil(this.contactSearch.length / this.perPage);
         },
+        // Function that gets exact number of Contacts for each page
         contactPerPage: function() {
             return this.contactSearch.slice((this.page - 1) * this.perPage, (this.page - 1) * this.perPage + this.perPage)
         } 
     },
     watch: {
         modalEdit: function(newInfo) {
+            // Clear all errores on the Edit Contact Modal form
             this.editNameError = false;
             this.editEmailError = false;
             this.editPhoneError = false;
+            // Get new entered data from the Edit Contact form required for following PATCH Request
             if (newInfo != undefined) {
                 this.editName = newInfo.fields.Name;
                 this.editEmail = newInfo.fields.Email;
@@ -238,27 +257,36 @@ var appTableContent = new Vue({
                 this.getTableContent();
 
         },
-        // 
+        // Function that navigates to the previous page if the button is available
         goToPreviousPage: function() {
             if(this.page != 1) {
                 return this.page -= 1
             }
         },
+        // Function that navigates to the next page if the button is available
         goToNextPage: function() {
             if(this.contactPerPage.length == this.perPage) {
                 return this.page += 1
             }
         },
+        // Function that shows maximum 3 page buttons
         getCurrentPage: function() {
-            if(this.getPages.length == 1) {
+            // Show only one button with number "1" if there is one page
+            console.log(this.getPages)
+            if(this.getPages <= 1) {
                 this.pagesArray = [this.page];
-            } else if(1 < this.getPages.length < NUM_PAGES) {
+            } 
+            // Show only two buttons with numbers if there are two pages
+            else if(1 < this.getPages < this.NUM_PAGES) {
                 this.pagesArray = [this.page];
                 this.pagesArray = this.pagesArray.push(this.page + 1);
-            } else {
+            } 
+            // Show only 3 buttons with numbers if there are 3 or more pages
+            else {
                 this.pagesArray = [this.page];
                 this.pagesArray = this.pagesArray.unshift(this.page - 1).push(this.page + 1);
             }
+            console.log('my pages = ' + this.pagesArray)
         }
     }
   })

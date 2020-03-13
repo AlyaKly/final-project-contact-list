@@ -33,7 +33,7 @@
         </span>
       </div>
 
-      <!-- Create Contact modal form =>> will be displayed when on the Add New Contact button click -->
+      <!-- Create Contact Modal form -->
       <div class="modal" v-bind:class="{ 'is-active': isShowModal }">
         <div class="modal-background" v-on:click="isShowModal = false; emptyCreateForm()"></div>
         <div class="modal-card">
@@ -281,8 +281,8 @@
     <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
       <a class="pagination-previous" :disabled="page == 1" @click.prevent="goToPreviousPage()">Previous</a>
       <a class="pagination-next" :disabled="contactPerPage.length < perPage" @click.prevent="goToNextPage()">Next page</a>
-      <ul class="pagination-list">
-        <li><a class="pagination-link" v-for="tmp in pagesArray" @click.prevent="page = 1 + tmp">{{tmp+1}}</a></li>
+      <!-- <ul class="pagination-list">
+        <li><a class="pagination-link" v-for="tmp in pagesArray" @click.prevent="page = tmp + 1">{{ tmp }}</a></li> -->
     </nav>
     
   </div>
