@@ -4,9 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- Axios -->
     <script src="node_modules/axios/dist/axios.min.js"></script>
+    <!-- Vue -->
     <script src="node_modules/vue/dist/vue.min.js"></script>
+    <!-- Font Awesom Icons -->
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <!-- Bulma -->
     <link rel="stylesheet" href="node_modules/bulma/css/bulma.min.css">
+    <!-- JavaScript -->
     <script defer src="js/main.js"></script>
 </head>
 <body>
@@ -17,6 +23,7 @@
       <div class="heading">
         <h1 class="title has-text-centered">Lista del Contactos</h1>
         <h2 class="subtitle has-text-centered">Esto es mi proyecto final con una lista del contactos</h2>
+        
       </div>
     </div>
   </section>
@@ -24,13 +31,20 @@
   <!-- Table with contacts list, Add New button, search and paging -->
   <section class="box">
 
-    <!-- Create new Contact button -->
+    <!-- Create new Contact -->
     <div id="vueapp">
-      <div class="buttons">
-        <button class="button is-light is-rounded" v-on:click="isShowModal = true">Add new Contact</button>
-        <span class="icon is-small is-left">
-          <!-- <i class="fas fa-envelope"></i> -->
-        </span>
+      <!-- Add New Contact button -->
+      <div class="buttons is-right">
+        <button class="button is-light is-rounded" v-on:click="isShowModal = true">
+          <!-- Icon inside the button -->
+          <span class="icon is-small">
+            <i class="fas fa-plus"></i>
+          </span>
+          <!-- Title of the button -->
+          <span>
+            Add new Contact
+          </span>
+      </button>
       </div>
 
       <!-- Create Contact Modal form -->
@@ -99,26 +113,31 @@
   <!-- Table with a list of Contacts -->
   <div id="app-table-content">
     <!-- Search by Name field -->
-    <div class="field has-addons has-addons-right has-addons-halfwidth">
-      <p class="control has-icons-left">
+    <div class="field has-addons has-addons-left has-addons-fullwidth">
+      <p class="control has-icons-left has-icons-right">
         <input v-model="searchName" class="input is-rounded" type="text" placeholder="Search...">
+        <!-- Icon inside the Search field -->
         <span class="icon is-small is-left">
-          <!-- <i class="fas fa-envelope"></i> -->
+          <i class="fas fa-search"></i>
+        </span>
+        <!-- Icon that cleans the Search field -->
+        <span class="icon is-small is-right" v-on:click="searchName = ''">
+          <i class="fas fa-times"></i>
         </span>
       </p>
     </div>
  
     <!-- Table with contact -->
     <div class="table-container">
-      <table class="table is-striped is-narrow is-fullwidth">
+      <table class="table is-striped is-narrow is-hoverable is-fullwidth">
         <thead class="has-background-grey-lighter">
           <tr>
             <th>Full Name</th>
             <th>Email Address</th>
             <th>Phone Number</th>
-            <th>View</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th class="has-text-centered">View</th>
+            <th class="has-text-centered">Edit</th>
+            <th class="has-text-centered">Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -126,19 +145,28 @@
             <td> {{ contact.fields.Name }} </td>
             <td> {{ contact.fields.Email }} </td>
             <td> {{ contact.fields.Phone }} </td>
-            <td>
-              <button v-on:click="modalInfo = contact">
-                📖
+            <!-- View Icon -->
+            <td class="has-text-centered">
+              <button class="button is-text is-small is-rounded" v-on:click="modalInfo = contact">
+                <span class="icon is-small">
+                  <i class="fas fa-address-card"></i>
+                </span>
               </button>
             </td>
-            <td>
-              <button v-on:click="modalEdit = contact">
-                ✏
+            <!-- Edit Icon -->
+            <td class="has-text-centered">
+              <button class="button is-text is-small is-rounded" v-on:click="modalEdit = contact">
+                <span class="icon is-small">
+                  <i class="fas fa-pen"></i>
+                </span>
               </button> 
             </td>
-            <td>
-              <button v-on:click="deleteRecord = contact">
-                ✖
+            <!-- Delete Icon -->
+            <td class="has-text-centered">
+              <button  class="button is-text is-small is-rounded" v-on:click="deleteRecord = contact">
+                <span class="icon is-small">
+                  <i class="fas fa-trash-alt"></i>
+                </span>
               </button>
             </td>
           </tr>
@@ -281,8 +309,8 @@
     <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
       <a class="pagination-previous" :disabled="page == 1" @click.prevent="goToPreviousPage()">Previous</a>
       <a class="pagination-next" :disabled="contactPerPage.length < perPage" @click.prevent="goToNextPage()">Next page</a>
-      <!-- <ul class="pagination-list">
-        <li><a class="pagination-link" v-for="tmp in pagesArray" @click.prevent="page = tmp + 1">{{ tmp }}</a></li> -->
+      <ul class="pagination-list">
+        <li><a class="pagination-link" v-for="tmp in pagesArray" @click.prevent="page = tmp + 1">{{ tmp }}</a></li>
     </nav>
     
   </div>
