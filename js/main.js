@@ -39,6 +39,7 @@ var app = new Vue({
         }
     },
     methods: {
+        // Function that validates empty fields and return errores
         fieldsValidation: function () {
             // validattion for empty "Full Name" field 
             this.nameError = false;
@@ -192,6 +193,7 @@ var appTableContent = new Vue({
                 // always executed
             });
         },
+        // Function that validates empty fields and returns errores
         editFieldsValidation: function () {
             // validattion for empty "Full Name" field 
             this.editNameError = false;
