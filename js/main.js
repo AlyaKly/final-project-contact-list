@@ -99,7 +99,7 @@ var app = new Vue({
  * Search field
  * @searchName - content of the search name field
  * Sorting by columns
- * @sortByName - defines which column title has been clicked to sort the table by this column
+ * @sortByColumn - defines which column title has been clicked to sort the table by this column
  * View Contact Form
  * @modalInfo - if True shows the View Contact modal form
  * Remove Contact Form
@@ -124,7 +124,7 @@ var appTableContent = new Vue({
     data: {
       contacts: [],
       searchName: '',
-      sortByName: '',
+      sortByColumn: '',
       contactValue: '',
       modalInfo: undefined,
       deleteRecord: undefined,
@@ -137,7 +137,7 @@ var appTableContent = new Vue({
       editEmailError: false,
       editPhoneError: false,
       page: 1,
-      perPage: 15,
+      perPage: 5,
       pagesArray: [],
       NUM_PAGES: 3
     },
@@ -148,17 +148,17 @@ var appTableContent = new Vue({
     },
     computed: {
         // Function that sorts the table by Full Name column
-        sortByFullName: function() {
+        sortByColumns: function() {
             return this.contacts.map(function (contact) {
                 let tempContact = contact;
                 tempContact.createdTime = new Date(contact.createdTime).getTime()
                 return tempContact
             }).sort(function(a, b) {
-                if(appTableContent.sortByName === 'fullName'){
+                if(appTableContent.sortByColumn === 'fullName'){
                     return (a.fields.Name.toLowerCase() < b.fields.Name.toLowerCase()) > 0 ? 1 : -1;
-                } else if(appTableContent.sortByName === 'emailAddress'){
+                } else if(appTableContent.sortByColumn === 'emailAddress'){
                     return (a.fields.Email.toLowerCase() < b.fields.Email.toLowerCase()) > 0 ? 1 : -1;
-                } else if(appTableContent.sortByName === 'phoneNumber'){
+                } else if(appTableContent.sortByColumn === 'phoneNumber'){
                     return (a.fields.Phone.toLowerCase() < b.fields.Phone.toLowerCase()) > 0 ? 1 : -1;
                 } else {
                     return a.createdTime - b.createdTime
@@ -167,14 +167,16 @@ var appTableContent = new Vue({
         },
         // Function that searches by Contact Name
         contactSearch: function() {
-            return this.sortByFullName.filter(function(contact){
+            return this.sortByColumns.filter(function(contact){
                 return contact.fields.Name != undefined ? contact.fields.Name.includes(appTableContent.searchName.charAt(0).toUpperCase() + appTableContent.searchName.slice(1)) : []
             });
         },
         // Function that gets total number of pages for the table
         getPages: function() {
             console.log(this.contactSearch.length)
+            console.log('pages = ' + Math.ceil(this.contactSearch.length / this.perPage));
             return Math.ceil(this.contactSearch.length / this.perPage);
+
         },
         // Function that gets exact number of Contacts for each page
         contactPerPage: function() {
