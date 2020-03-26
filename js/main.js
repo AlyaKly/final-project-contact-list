@@ -98,6 +98,8 @@ var app = new Vue({
  * @contacts - array with a list of all existing contacts
  * Search field
  * @searchName - content of the search name field
+ * Sorting by columns
+ * @sortByName - defines which column title has been clicked to sort the table by this column
  * View Contact Form
  * @modalInfo - if True shows the View Contact modal form
  * Remove Contact Form
@@ -122,6 +124,7 @@ var appTableContent = new Vue({
     data: {
       contacts: [],
       searchName: '',
+      sortByName: '',
       contactValue: '',
       modalInfo: undefined,
       deleteRecord: undefined,
@@ -134,7 +137,7 @@ var appTableContent = new Vue({
       editEmailError: false,
       editPhoneError: false,
       page: 1,
-      perPage: 5,
+      perPage: 15,
       pagesArray: [],
       NUM_PAGES: 3
     },
@@ -144,9 +147,27 @@ var appTableContent = new Vue({
         this.getCurrentPage();
     },
     computed: {
+        // Function that sorts the table by Full Name column
+        sortByFullName: function() {
+            return this.contacts.map(function (contact) {
+                let tempContact = contact;
+                tempContact.createdTime = new Date(contact.createdTime).getTime()
+                return tempContact
+            }).sort(function(a, b) {
+                if(appTableContent.sortByName === 'fullName'){
+                    return (a.fields.Name.toLowerCase() < b.fields.Name.toLowerCase()) > 0 ? 1 : -1;
+                } else if(appTableContent.sortByName === 'emailAddress'){
+                    return (a.fields.Email.toLowerCase() < b.fields.Email.toLowerCase()) > 0 ? 1 : -1;
+                } else if(appTableContent.sortByName === 'phoneNumber'){
+                    return (a.fields.Phone.toLowerCase() < b.fields.Phone.toLowerCase()) > 0 ? 1 : -1;
+                } else {
+                    return a.createdTime - b.createdTime
+                }
+            }).reverse()
+        },
         // Function that searches by Contact Name
         contactSearch: function() {
-            return this.contacts.filter(function(contact){
+            return this.sortByFullName.filter(function(contact){
                 return contact.fields.Name != undefined ? contact.fields.Name.includes(appTableContent.searchName.charAt(0).toUpperCase() + appTableContent.searchName.slice(1)) : []
             });
         },
