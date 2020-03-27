@@ -139,12 +139,13 @@ var appTableContent = new Vue({
       page: 1,
       perPage: 5,
       pagesArray: [],
-      NUM_PAGES: 3
+      NUM_PAGES: 3,
+      pagesNum: 1
     },
     mounted: function() {
         // Display table with existing contacts on page loading
         this.getTableContent();
-        this.getCurrentPage();
+        // this.getCurrentPage();
     },
     computed: {
         // Function that sorts the table by Full Name column
@@ -171,13 +172,14 @@ var appTableContent = new Vue({
                 return contact.fields.Name != undefined ? contact.fields.Name.includes(appTableContent.searchName.charAt(0).toUpperCase() + appTableContent.searchName.slice(1)) : []
             });
         },
-        // Function that gets total number of pages for the table
-        getPages: function() {
-            console.log(this.contactSearch.length)
-            console.log('pages = ' + Math.ceil(this.contactSearch.length / this.perPage));
-            return Math.ceil(this.contactSearch.length / this.perPage);
+        // // Function that gets total number of pages for the table
+        // getPages: function() {
 
-        },
+        //     console.log('test - ' + this.pagesNum)
+        //     console.log('pages = ' + Math.ceil(this.contactSearch.size / this.perPage));
+        //     return Math.ceil(this.contactSearch.length / this.perPage);
+
+        // },
         // Function that gets exact number of Contacts for each page
         contactPerPage: function() {
             return this.contactSearch.slice((this.page - 1) * this.perPage, (this.page - 1) * this.perPage + this.perPage)
@@ -196,7 +198,7 @@ var appTableContent = new Vue({
                 this.editPhone = newInfo.fields.Phone;
                 this.editContactID = newInfo.id;
             }
-        }
+        },
     },
     methods: {
         // Function that returns a list of all existing contacts
@@ -207,6 +209,8 @@ var appTableContent = new Vue({
                 // handle success
                 console.log(response.data.records)
                 appTableContent.contacts = response.data.records;
+                appTableContent.pagesNum = appTableContent.contacts.length;
+                appTableContent.getCurrentPage();
             })
             .catch(function (error) {
                 // handle error
@@ -296,22 +300,44 @@ var appTableContent = new Vue({
         },
         // Function that shows maximum 3 page buttons
         getCurrentPage: function() {
-            // Show only one button with number "1" if there is one page
-            console.log(this.getPages)
-            if(this.getPages <= 1) {
+            //let totalPages = '';
+            this.totalPages = Math.ceil(this.pagesNum / this.perPage);
+            console.log('total pages = ' + this.totalPages);
+            console.log('max pages = ' + this.NUM_PAGES);
+
+            if(this.totalPages > this.NUM_PAGES) {
+                // this.pagesArray = [this.page];
+                console.log(this.page)
                 this.pagesArray = [this.page];
-            } 
-            // Show only two buttons with numbers if there are two pages
-            else if(1 < this.getPages < this.NUM_PAGES) {
-                this.pagesArray = [this.page];
-                this.pagesArray = this.pagesArray.push(this.page + 1);
-            } 
-            // Show only 3 buttons with numbers if there are 3 or more pages
-            else {
-                this.pagesArray = [this.page];
-                this.pagesArray = this.pagesArray.unshift(this.page - 1).push(this.page + 1);
+                console.log('1 my pages = ' + this.pagesArray)
+
+                this.pagesArray.unshift(this.page - 1);
+                console.log('2 my pages = ' + this.pagesArray)
+
+                 this.pagesArray.push(this.page + 1);
+                console.log('3 my pages = ' + this.pagesArray)
+
+
+                // this.pagesArray.unshift(this.page - 1).push(this.page + 1);
+
             }
-            console.log('my pages = ' + this.pagesArray)
+
+
+            // // Show only one button with number "1" if there is one page
+            // if(this.totalPages <= 1) {
+            //     this.pagesArray = [this.page];
+            // } 
+            // // Show only two buttons with numbers if there are two pages
+            // else if(1 < this.totalPages < this.NUM_PAGES) {
+            //     this.pagesArray = [this.page];
+            //     this.pagesArray = this.pagesArray.push(this.page + 1);
+            // } 
+            // // Show only 3 buttons with numbers if there are 3 or more pages
+            // else {
+            //     this.pagesArray = [this.page];
+            //     this.pagesArray = this.pagesArray.unshift(this.page - 1).push(this.page + 1);
+            // }
+            // console.log('my pages = ' + this.pagesArray)
         }
     }
   })
