@@ -310,7 +310,7 @@
       <a class="pagination-previous" :disabled="page == 1" @click.prevent="goToPreviousPage()">Previous</a>
       <a class="pagination-next" :disabled="contactPerPage.length < perPage" @click.prevent="goToNextPage()">Next page</a>
       <ul class="pagination-list" v-for="tmp in pagesArray">
-        <li><a class="pagination-link" @click.prevent="page = tmp">{{ tmp }}</a></li>
+        <li><a class="pagination-link" @click.prevent="showPagesNumbers(tmp)">{{ tmp }}</a></li>
     </nav>
     
   </div>
