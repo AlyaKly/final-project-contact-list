@@ -113,17 +113,21 @@
   <!-- Table with a list of Contacts -->
   <div id="app-table-content">
     <!-- Search by Name field -->
-    <div class="field has-addons has-addons-left has-addons-fullwidth">
-      <p class="control has-icons-left has-icons-right">
+    <div class="field has-addons">
+      <p class="control is-expanded has-icons-left">
         <input v-model="searchName" class="input is-rounded" type="text" placeholder="Search...">
         <!-- Icon inside the Search field -->
         <span class="icon is-small is-left">
           <i class="fas fa-search"></i>
         </span>
-        <!-- Icon that cleans the Search field -->
-        <span class="icon is-small is-right" v-on:click="searchName = ''">
-          <i class="fas fa-times"></i>
-        </span>
+      </p>
+      <!-- Clear Search field -->
+      <p class="control">
+        <a class="button is-rounded" :disabled="searchName == ''" v-on:click="clearSearchField">
+          <span class="icon is-right">
+            <i class="fas fa-times"></i>
+          </span>
+        </a>
       </p>
     </div>
  
@@ -312,9 +316,23 @@
       <ul class="pagination-list" v-for="tmp in pagesArray">
         <li><a class="pagination-link" @click.prevent="showPagesNumbers(tmp)">{{ tmp }}</a></li>
     </nav>
-    
+   
   </div>
   </section>
+
+  <footer class="footer">
+    <!-- <div class="content has-text-centered">
+      <p>
+        <strong>Created by Alina Klymenko.</strong>
+      </p>
+      <p>
+        <strong>Style: </strong><a href="https://bulma.io">Bulma</a>
+      </p>
+      <p>
+        <strong>Icons: </strong><a href="https://fontawesome.com">Font Awesome</a>
+      </p>
+    </div> -->
+  </footer>
 
 
 </body>
