@@ -167,7 +167,7 @@ var appTableContent = new Vue({
                 } 
                 // Sort the table by Phone Number
                 else if(appTableContent.sortByColumn === 'phoneNumber'){
-                    return (a.fields.Phone.toLowerCase() < b.fields.Phone.toLowerCase()) > 0 ? 1 : -1;
+                    return (a.fields.Phone < b.fields.Phone) > 0 ? 1 : -1;
                 } 
                 // Sort the table by default by Created date
                 else {
@@ -184,14 +184,7 @@ var appTableContent = new Vue({
         // Function that gets exact number of Contacts for each page
         contactPerPage: function() {
             return this.contactSearch.slice((this.page - 1) * this.perPage, (this.page - 1) * this.perPage + this.perPage)
-        },
-        // lastPage: function() {
-        //     const ULTIMA_PAG = Math.ceil(this.contactSearch.length / this.perPage)
-        //         console.log(ULTIMA_PAG)
-        //         console.log('test')
-
-        //         return this.page === ULTIMA_PAG;
-        // } 
+        } 
     },
     watch: {
         modalEdit: function(newInfo) {
@@ -218,7 +211,6 @@ var appTableContent = new Vue({
                 // console.log(response.data.records)
                 appTableContent.contacts = response.data.records;
                 appTableContent.pagesNum = appTableContent.contacts.length;
-                // appTableContent.pagesNum = Math.ceil(appTableContent.contacts.length / appTableContent.perPage);
                 appTableContent.getCurrentPage();
 
             })
@@ -352,7 +344,7 @@ var appTableContent = new Vue({
                     this.pagesArray.unshift(this.page - 1);
                 }
             }
-            // If there is onle 1 page
+            // If there is only 1 page
             else {
                 this.pagesArray = [this.page];
             }
