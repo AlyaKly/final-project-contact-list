@@ -150,20 +150,27 @@ var appTableContent = new Vue({
         // this.getCurrentPage();
     },
     computed: {
-        // Function that sorts the table by Full Name column
+        // Function that sorts the table by columns
         sortByColumns: function() {
             return this.contacts.map(function (contact) {
                 let tempContact = contact;
                 tempContact.createdTime = new Date(contact.createdTime).getTime()
                 return tempContact
             }).sort(function(a, b) {
+                // Sort the table by Full Name column
                 if(appTableContent.sortByColumn === 'fullName'){
                     return (a.fields.Name.toLowerCase() < b.fields.Name.toLowerCase()) > 0 ? 1 : -1;
-                } else if(appTableContent.sortByColumn === 'emailAddress'){
+                } 
+                // Sort the table by Email Address
+                else if(appTableContent.sortByColumn === 'emailAddress'){
                     return (a.fields.Email.toLowerCase() < b.fields.Email.toLowerCase()) > 0 ? 1 : -1;
-                } else if(appTableContent.sortByColumn === 'phoneNumber'){
+                } 
+                // Sort the table by Phone Number
+                else if(appTableContent.sortByColumn === 'phoneNumber'){
                     return (a.fields.Phone.toLowerCase() < b.fields.Phone.toLowerCase()) > 0 ? 1 : -1;
-                } else {
+                } 
+                // Sort the table by default by Created date
+                else {
                     return a.createdTime - b.createdTime
                 }
             }).reverse()
@@ -321,7 +328,7 @@ var appTableContent = new Vue({
 
             // console.log(this.page)
             // If there are more than 3 (NUM_PAGES) pages than show 3 buttons with page numbers
-            if(this.totalPages > this.NUM_PAGES) {
+            if(this.totalPages >= this.NUM_PAGES) {
                 // IF current page is the first one
                 if(this.page == 1) {
                     this.pagesArray = [this.page];
