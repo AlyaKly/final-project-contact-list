@@ -319,14 +319,8 @@ var appTableContent = new Vue({
         // Function that shows maximum 3 page buttons
         getCurrentPage: function() {
             this.totalPages = Math.ceil(this.pagesNum / this.perPage);
-            // console.log('total num of pages = ' + this.totalPages);
-            // console.log('max pages = ' + this.NUM_PAGES);
-
+            // Finding last page number
             const LAST_PAGE = Math.ceil(this.contactSearch.length / this.perPage)
-            
-            // console.log('last ' + LAST_PAGE)
-
-            // console.log(this.page)
             // If there are more than 3 (NUM_PAGES) pages than show 3 buttons with page numbers
             if(this.totalPages >= this.NUM_PAGES) {
                 // IF current page is the first one
@@ -337,7 +331,6 @@ var appTableContent = new Vue({
                 } 
                 // if current page is the last one
                 else if(this.page == LAST_PAGE) {
-                    // console.log(this.page)
                     this.pagesArray = [this.page];
                     this.pagesArray.unshift(this.page - 1);
                     this.pagesArray.unshift(this.page - 2);
@@ -348,7 +341,6 @@ var appTableContent = new Vue({
                 this.pagesArray.unshift(this.page - 1);
                 this.pagesArray.push(this.page + 1);
                 }
-            // console.log('3 my pages = ' + this.pagesArray)
             }
             // If there are less than 3 (NUM_PAGES) pages than show only 2 buttons with page numbers
             else if(this.totalPages == 2) {
@@ -356,18 +348,13 @@ var appTableContent = new Vue({
                     this.pagesArray = [this.page];
                     this.pagesArray.push(this.page + 1);
                 } else {
-                    // console.log(this.page)
                     this.pagesArray = [this.page];
                     this.pagesArray.unshift(this.page - 1);
                 }
-            // console.log('2 my pages = ' + this.pagesArray)
             }
-
             // If there is onle 1 page
             else {
                 this.pagesArray = [this.page];
-                    // console.log('1 my pages = ' + this.pagesArray)
-
             }
         },
         // Function that gets curent page from the HTML
