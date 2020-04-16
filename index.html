@@ -23,8 +23,10 @@
   <section class="section">
     <div class="box has-background-grey-lighter">
       <div class="heading">
-        <h1 class="title has-text-centered">Lista del Contactos</h1>
-        <h2 class="subtitle has-text-centered">Esto es mi proyecto final con una lista del contactos</h2>
+        <h1 class="title is-2 is-spaced has-text-centered">Contact List</h1>
+        <h2 class="subtitle is-5 has-text-centered">Final project for the course <strong>"Máster en Desarrollo FrontEnd"</strong> for the <a href="https://idecrea.es/">Idecrea</a> school</h2>
+        <h2 class="subtitle is-5 has-text-centered">Create by <strong>Alina Klymenko</strong></h2>
+
         
       </div>
     </div>
@@ -103,9 +105,11 @@
             </div>
           </section>
           <!-- Modal form footer with Save and Cancel buttons -->
-          <footer class="modal-card-foot">
-            <button class="button is-success" v-on:click="createNewContact">Create</button>
-            <button class="button" v-on:click="isShowModal = false; emptyCreateForm()">Cancel</button>
+          <footer class="modal-card-foot" style="padding-top: 10px; padding-bottom: 10px">
+            <div  style="margin-left: auto; margin-right: auto;">
+              <button class="button is-success" v-on:click="createNewContact">Create</button>
+              <button class="button" v-on:click="isShowModal = false; emptyCreateForm()">Cancel</button>
+            </div>
           </footer>
         </div>
         <button class="modal-close is-large" aria-label="close"  v-on:click="isShowModal = false; emptyCreateForm()"></button>
@@ -288,9 +292,11 @@
           </div>
         </section>
       <!-- Modal form footer with Save and Cancel buttons -->
-      <footer class="modal-card-foot">
+      <footer class="modal-card-foot" style="padding-top: 10px; padding-bottom: 10px">
+        <div  style="margin-left: auto; margin-right: auto;">
         <button class="button is-success" v-on:click="updateContact">Save</button>
         <button class="button" v-on:click="modalEdit = undefined">Cancel</button>
+      </div>
       </footer>
       </div>
       <!-- <button class="modal-close is-large" aria-label="close"  v-on:click="modalEdit = undefined"></button> -->
@@ -300,42 +306,45 @@
     <div class="modal" v-if="deleteRecord" v-bind:class="{ 'is-active': deleteRecord }">
       <div class="modal-background"></div>
       <div class="modal-card">
-        <section class="modal-card-body">
+        <section class="modal-card-body has-text-centered">
           <!-- Content ... -->
           Do you want to delete the contact <strong>{{ deleteRecord.fields.Name }}</strong>?
         </section>
-        <footer class="modal-card-foot">
-          <button class="button is-success" v-on:click="removeContact">Delete</button>
-          <button class="button" v-on:click="deleteRecord = undefined">Cancel</button>
-        </footer>
+        <footer class="modal-card-foot" style="padding-top: 10px; padding-bottom: 10px">
+          <div  style="margin-left: auto; margin-right: auto;">
+            <button class="button is-success" v-on:click="removeContact">Delete</button>
+            <button class="button" v-on:click="deleteRecord = undefined">Cancel</button>
+          </div>
+          </footer>
       </div>
     </div>
 
     <!-- Pagination -->
-    <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
+    <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination" style="margin: auto; width: 50%">
       <a class="pagination-previous" :disabled="page == 1" @click.prevent="goToPreviousPage()">Previous</a>
       <a class="pagination-next" :disabled="contactPerPage.length < perPage || page == last_page" @click.prevent="goToNextPage()">Next page</a>
       <ul class="pagination-list" v-for="tmp in pagesArray">
-        <li><a v-bind:class="{'pagination-link':true, 'is-current':(tmp===page)}" @click.prevent="showPagesNumbers(tmp)">{{ tmp }}</a></li>
+        <li><a v-bind:class="{'pagination-link':true, 'is-current':(tmp === page)}" @click.prevent="showPagesNumbers(tmp)">{{ tmp }}</a></li>
     </nav>
    
   </div>
   </section>
 
-  <footer class="footer">
-    <!-- <div class="content has-text-centered">
+  <!-- Footer -->
+  <footer class="footer" style="padding-top: 20px; padding-bottom: 30px">
+    <div class="content has-text-centered">
       <p>
-        <strong>Created by Alina Klymenko.</strong>
+        Many thanks to <a href="https://programadorwebvalencia.com/">Andros Fenollo</a> for his help in creating this project.
       </p>
       <p>
-        <strong>Style: </strong><a href="https://bulma.io">Bulma</a>
+        Style: <a href="https://bulma.io">Bulma</a>  
+        Icons: <a href="https://fontawesome.com">Font Awesome</a>  
+        Framework: <a href="https://vuejs.org/">Vue.js</a>  
+        Database: <a href="https://airtable.com/">Airtable</a>
+        Repository & hosting: <a href="https://github.com/">GitHub</a>
       </p>
-      <p>
-        <strong>Icons: </strong><a href="https://fontawesome.com">Font Awesome</a>
-      </p>
-    </div> -->
+    </div>
   </footer>
-
 
 </body>
 </html>
