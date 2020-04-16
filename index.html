@@ -314,9 +314,9 @@
     <!-- Pagination -->
     <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
       <a class="pagination-previous" :disabled="page == 1" @click.prevent="goToPreviousPage()">Previous</a>
-      <a class="pagination-next" :disabled="contactPerPage.length < perPage" @click.prevent="goToNextPage()">Next page</a>
+      <a class="pagination-next" :disabled="contactPerPage.length < perPage || page == last_page" @click.prevent="goToNextPage()">Next page</a>
       <ul class="pagination-list" v-for="tmp in pagesArray">
-        <li><a class="pagination-link" @click.prevent="showPagesNumbers(tmp)">{{ tmp }}</a></li>
+        <li><a v-bind:class="{'pagination-link':true, 'is-current':(tmp===page)}" @click.prevent="showPagesNumbers(tmp)">{{ tmp }}</a></li>
     </nav>
    
   </div>

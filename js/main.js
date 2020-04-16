@@ -119,7 +119,7 @@ var app = new Vue({
  * @pagesArray - list of the pages' numbers displayed
  * @NUM_PAGES - maximum number of pages that should be displayed 
  * @totalPages - total number of pages
- * @LAST_PAGE - number of the last page
+ * @last_page - number of the last page
  */
 var appTableContent = new Vue({
     el: '#app-table-content',
@@ -142,7 +142,8 @@ var appTableContent = new Vue({
       perPage: 5,
       pagesArray: [],
       NUM_PAGES: 3,
-      pagesNum: ''
+      pagesNum: '',
+      last_page: ''
     },
     mounted: function() {
         // Display table with existing contacts on page loading
@@ -302,7 +303,7 @@ var appTableContent = new Vue({
         },
         // Function that navigates to the next page if the button is available
         goToNextPage: function() {
-            if(this.contactPerPage.length == this.perPage) {
+            if(this.contactPerPage.length == this.perPage && this.page !== this.last_page) {
                 this.page += 1
                 // console.log(this.page)
             }
@@ -312,7 +313,8 @@ var appTableContent = new Vue({
         getCurrentPage: function() {
             this.totalPages = Math.ceil(this.pagesNum / this.perPage);
             // Finding last page number
-            const LAST_PAGE = Math.ceil(this.contactSearch.length / this.perPage)
+            this.last_page = Math.ceil(this.contactSearch.length / this.perPage)
+
             // If there are more than 3 (NUM_PAGES) pages than show 3 buttons with page numbers
             if(this.totalPages >= this.NUM_PAGES) {
                 // IF current page is the first one
@@ -322,7 +324,7 @@ var appTableContent = new Vue({
                     this.pagesArray.push(this.page + 2);
                 } 
                 // if current page is the last one
-                else if(this.page == LAST_PAGE) {
+                else if(this.page == this.last_page) {
                     this.pagesArray = [this.page];
                     this.pagesArray.unshift(this.page - 1);
                     this.pagesArray.unshift(this.page - 2);
