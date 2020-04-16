@@ -314,7 +314,6 @@ var appTableContent = new Vue({
             this.totalPages = Math.ceil(this.pagesNum / this.perPage);
             // Finding last page number
             this.last_page = Math.ceil(this.contactSearch.length / this.perPage)
-
             // If there are more than 3 (NUM_PAGES) pages than show 3 buttons with page numbers
             if(this.totalPages >= this.NUM_PAGES) {
                 // IF current page is the first one
