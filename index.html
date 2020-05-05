@@ -316,7 +316,7 @@
     </div>
 
     <!-- Pagination -->
-    <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination" style="margin: auto; width: 50%">
+    <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination" style="margin: auto; width: 60%">
       <a class="pagination-previous" :disabled="page == 1" @click.prevent="goToPreviousPage()">Previous</a>
       <a class="pagination-next" :disabled="contactPerPage.length < perPage || page == last_page" @click.prevent="goToNextPage()">Next page</a>
       <ul class="pagination-list" v-for="tmp in pagesArray">
